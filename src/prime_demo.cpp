@@ -36,7 +36,7 @@ int main(int argc, char const *argv[])
 	}
 	t2 = time(NULL);
 
-	printf("found %d primes using raw_test, cost %ld secs\n", count,t2-t1);
+	//printf("found %d primes using raw_test, cost %ld secs\n", count,t2-t1);
 
 	return 0;
 }

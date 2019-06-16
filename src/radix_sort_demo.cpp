@@ -38,16 +38,16 @@ int main(int argc, char const *argv[])
 		list[i] = rand()%(MAX_ELEMENTS*10);
 	}
 
-	printf("The list before sorting is:\n");
-	printlist(list,MAX_ELEMENTS);
+	//printf("The list before sorting is:\n");
+	//printlist(list,MAX_ELEMENTS);
 
 	// sort the list using insertion sort
 	radix_sort(list, MAX_ELEMENTS);  
 	check_order(list, MAX_ELEMENTS);
 
 	// print the result
-	printf("The list after sorting using radix sort algorithm:\n");
-	printlist(list,MAX_ELEMENTS);
+	//printf("The list after sorting using radix sort algorithm:\n");
+	//printlist(list,MAX_ELEMENTS);
 
 	return 0;
 }
