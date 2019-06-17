@@ -3,7 +3,7 @@ CC=clang
 CPP=clang++
 AR=ar
 RANLIB=ranlib
-CFLAGS= -g -Wall -Wno-unused-function
+CFLAGS= -g -Wall -Wno-unused-function -O3
 C11FLAGS= -g -Wall -Wno-unused-function -std=c++11
 SRCDIR = ./src
 INCLUDEDIR = -I./include -I.
