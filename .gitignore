@@ -1,3 +1,6 @@
 *.dSYM
 *_demo
 *.out.*
+__pycache__/*
+logs/*
+logs.csv
