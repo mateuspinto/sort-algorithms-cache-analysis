@@ -2,8 +2,6 @@
 *_demo
 *.out.*
 __pycache__/*
-logs/*
-logs.csv
 .ipynb_checkpoints/*
 *.ipynb
 *.pyc
