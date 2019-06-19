@@ -69,7 +69,7 @@ alg = {0 : "./bubble_sort_demo ",
 	   1 : "./radix_sort_demo ",
 	   2 : "./quick_sort_demo ",
 	   3 : "./prime_demo ",
-	   4 : "./prime_demo "}
+	   4 : "./prime_custom_demo "}
 
 metrics = {0 : 'cacheReferences',
 		   1 : 'cacheReferencesRelat',
