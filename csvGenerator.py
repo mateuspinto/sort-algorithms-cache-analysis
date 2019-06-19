@@ -9,7 +9,7 @@ class csvGenerator(object):
 
         opened = open(self.csv, "w")
 
-        opened.write('algorithm,entries,cache-references,cache-references-relat,cache-misses,cache-misses-relat,task-clock,task-clock-relat,cycles,cycles-relat,instructions,instructions-relat,elapsed-seconds\n')
+        opened.write('algorithm,entries,cacheReferences,cacheReferencesRelat,cacheMisses,cacheMissesRelat,taskClock,taskClockRelat,cycles,cyclesRelat,instructions,instructionsRelat,elapsedSeconds\n')
 
         for filename in glob.glob("logs/*"):
             fileA = open(filename, "r")

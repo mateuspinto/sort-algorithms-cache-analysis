@@ -166,6 +166,29 @@ while keep:
 		print("CSV created :3")
 		reshow()
 
+	elif selection == 6:
+		import pandas as pd
+		import matplotlib.pyplot as plt
+
+		showAlg()
+		selAlg = int(input("Select one: "))
+
+		while((selAlg<0 or selAlg>(len(alg)-1)) and selAlg != 9):
+				selAlg = int(input("Error. Type a valid number: "))
+
+		if selAlg == 9: # Going back to main menu
+			pass
+		else:
+
+			selAlg = alg[selAlg]
+
+			csv = pd.read_csv("logs.csv")
+			alg = csv[csv.algorithm == selAlg[2:][:-1]].sort_values(by='entries').reset_index()
+			plt.plot(alg.entries, alg['cacheMissesRelat'])
+			plt.show()
+
+		reshow()
+
 	# Clear binaries
 	elif selection == 8:
 		os.system("make clean")
