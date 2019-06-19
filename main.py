@@ -1,6 +1,6 @@
 import os
 import datetime
-from csvGenerator import csvGenerator
+from csvGeneratorPerf import csvGeneratorPerf
 
 def showMenu():
 	print()
@@ -12,8 +12,8 @@ def showMenu():
 	print("2 - Run algorithm analysis with Perf")
 	print("3 - Run cache simulations with Valgrind")
 	print("4 - Run empirical tests")
-	print("5 - Create CSV")
-	print("6 - Plot graphs")
+	print("6 - Create CSV")
+	print("7 - Plot graphs")
 	print("8 - Delete binaries")
 	print("9 - Quit")
 	print()
@@ -62,7 +62,8 @@ def showMetrics():
 keep = 1
 perf = "perf stat -e cache-references,cache-misses,task-clock,cycles,instructions -a "
 perfSave = "perf stat -o FILENAME -e cache-references,cache-misses,task-clock,cycles,instructions -a "
-valgrind = "valgrind --tool=cachegrind --I1=Ix,Iy,Iz --D1=Dx,Dy,Dz --LL=Lx,Ly,Lz "
+valgrind = 'valgrind --tool=cachegrind --I1=Ix,Iy,Iz --D1=Dx,Dy,Dz --LL=Lx,Ly,Lz '
+valgrindSave = 'valgrind --log-file="TOSAVE" --tool=cachegrind --I1=Ix,Iy,Iz --D1=Dx,Dy,Dz --LL=Lx,Ly,Lz '
 
 alg = {0 : "./bubble_sort_demo ",
 	   1 : "./radix_sort_demo ",
@@ -82,7 +83,7 @@ metrics = {0 : 'cacheReferences',
 		   9 : 'instructionsRelat',
 		   10: 'elapsedSeconds'}
 
-generate = csvGenerator()
+generate = csvGeneratorPerf()
 
 showMenu()
 
@@ -138,27 +139,17 @@ while keep:
 			selAlg = alg[selAlg]
 
 			
-			Iy = int(input("[LEVEL1 INSTRUCTION CACHE] How much words per block? "))
-			Iz = int(input("[LEVEL1 INSTRUCTION CACHE] How much blocks? "))
+			Iy = input("[LEVEL1 INSTRUCTION CACHE] Associativity: ")
+			Iz = input("[LEVEL1 INSTRUCTION CACHE] Line Size: ")
+			Ix = input("[LEVEL1 INSTRUCTION CACHE] Size: ")
 
-			Dy = int(input("[LEVEL1 DATA CACHE] How much words per block? "))
-			Dz = int(input("[LEVEL1 DATA CACHE] How much blocks? "))
+			Dy = input("[LEVEL1 DATA CACHE] Associativity: ")
+			Dz = input("[LEVEL1 DATA CACHE] Line Size: ")
+			Dx = input("[LEVEL1 INSTRUCTION CACHE] Size: ")
 
-			Ly = int(input("[LAST LEVEL CACHE] How much words per block? "))
-			Lz = int(input("[LAST LEVEL CACHE] How much blocks? "))
-
-			Ix = str(Iy * Iz)
-			Dx = str(Dy * Dz)
-			Lx = str(Ly * Lz)
-
-			Iy = str(Iy)
-			Iz = str(Iz)
-			
-			Dy = str(Dy)
-			Dz = str(Dz)
-
-			Ly = str(Ly)
-			Lz = str(Lz)
+			Ly = input("[LAST LEVEL CACHE] Associativity: ")
+			Lz = input("[LAST LEVEL CACHE] Line Size: ")
+			Lx = input("[LEVEL1 INSTRUCTION CACHE] Size: ")
 
 			samples = int(input("How much entries do you want? "))
 
@@ -189,17 +180,48 @@ while keep:
 			for zeros in range(order+1):
 				for i in range(0,10):
 					row = i*(10**zeros)
-					os.system(perfSave.replace("FILENAME", "logs/" + selAlg[2:][:-1] + "#" +str(row) + "#" + str(datetime.datetime.now()).replace(" ","_") + ".txt") + selAlg + str(row))
+					os.system(perfSave.replace("FILENAME", "logsPerf/" + selAlg[2:][:-1] + "#" +str(row) + "#" + str(datetime.datetime.now()).replace(" ","_") + ".txt") + selAlg + str(row))
 
 		reshow()
 
 	elif selection == 5:
+		
+		# showAlg()
+		# selAlg = int(input("Select one: "))
+
+		# while((selAlg<0 or selAlg>(len(alg)-1)) and selAlg != 9):
+		# 		selAlg = int(input("Error. Type a valid number: "))
+
+		# if selAlg == 9: # Going back to main menu
+		# 	pass
+		# else:
+		
+		# 	selAlg = alg[selAlg]
+		associativity = 2
+		lineSize = 16
+		size = 64
+
+		while associativity<=64:
+			while lineSize<=128:
+				while size<=16384:
+
+					print(str(associativity) + ' ' + str(lineSize) + ' ' + str(size))
+
+					size *= 2
+				size = 64
+				lineSize *= 2
+			lineSize = 16
+			associativity *= 2
+
+
+
+	elif selection == 6:
 		print("Creating csv...")
 		generate.generate()
 		print("CSV created :3")
 		reshow()
 
-	elif selection == 6:
+	elif selection == 7:
 		import pandas as pd
 		import matplotlib.pyplot as plt
 
@@ -226,7 +248,7 @@ while keep:
 			else:
 
 				metric = metrics[metric]
-				csv = pd.read_csv("logs.csv")
+				csv = pd.read_csv("logsPerf.csv")
 				algCsv = csv[csv.algorithm == stringAlg[2:][:-1]].sort_values(by='entries').reset_index()
 				plt.plot(algCsv.entries, algCsv[metric])
 				plt.title(stringAlg[2:][:-1])

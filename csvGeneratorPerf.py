@@ -1,8 +1,8 @@
-class csvGenerator(object):
+class csvGeneratorPerf(object):
     
     def __init__(self):
         self.perf = ['cache-references', 'cache-misses', 'task-clock', 'cycles', 'instructions']
-        self.csv = "logs.csv"
+        self.csv = "logsPerf.csv"
 
     def generate(self):
         import glob
@@ -11,7 +11,7 @@ class csvGenerator(object):
 
         opened.write('algorithm,entries,cacheReferences,cacheReferencesRelat,cacheMisses,cacheMissesRelat,taskClock,taskClockRelat,cycles,cyclesRelat,instructions,instructionsRelat,elapsedSeconds\n')
 
-        for filename in glob.glob("logs/*"):
+        for filename in glob.glob("logsPerf/*"):
             fileA = open(filename, "r")
             save = '"' + filename.split("/", 1)[1].split("#", 1)[0] + '",' + filename.split("#")[1] + ','
             
@@ -28,5 +28,5 @@ class csvGenerator(object):
         
         opened.close()
 
-a = csvGenerator()
+a = csvGeneratorPerf()
 a.generate()
