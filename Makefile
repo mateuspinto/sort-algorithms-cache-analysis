@@ -13,7 +13,8 @@ LIBS = -lm
 PROGRAMS =  radix_sort_demo \
        		quick_sort_demo \
 			bubble_sort_demo \
-			prime_demo
+			prime_demo \
+			prime_custom_demo
 
 all: $(PROGRAMS)
 
@@ -27,6 +28,9 @@ bubble_sort_demo: $(SRCDIR)/bubble_sort_demo.cpp
 	$(CPP) $(CFLAGS) -o $@ $^ $(INCLUDEDIR) $(LIBS)
 
 prime_demo: $(SRCDIR)/prime_demo.cpp
+	$(CPP) $(CFLAGS) -o $@ $^ $(INCLUDEDIR) $(LIBS)
+
+prime_custom_demo: $(SRCDIR)/prime_custom_demo.cpp
 	$(CPP) $(CFLAGS) -o $@ $^ $(INCLUDEDIR) $(LIBS)
 
 clean:
