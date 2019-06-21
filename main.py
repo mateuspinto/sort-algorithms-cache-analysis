@@ -162,7 +162,7 @@ while keep:
 			while(samples<=0):
 				samples = int(input("Error. Type a valid number: "))
 
-			filename = "logsValgrind/" + selAlg[2:][:-1] + "#" + str(samples) + 'x' + str(Ix) + 'x' + str(Iy) + 'x' + str(Iz) + 'x' + str(Dx) + 'x' + str(Dy) + 'x' + str(Dz) + 'x' + str(Lx) + 'x' + str(Ly) + 'x' + str(Lz) + 'x' + "#" + str(datetime.datetime.now()).replace(" ","_") + ".txt"
+			filename = "logsValgrind/" + selAlg[2:][:-1] + "#" + str(samples) + 'x' + str(Ix) + 'x' + str(Iy) + 'x' + str(Iz) + 'x' + str(Dx) + 'x' + str(Dy) + 'x' + str(Dz) + 'x' + str(Lx) + 'x' + str(Ly) + 'x' + str(Lz) + 'x' + "#" + ".txt"
 			os.system(valgrind.replace("FILENAME", filename).replace("Ix", Ix).replace("Iy", Iy).replace("Iz", Iz).replace("Dx", Dx).replace("Dy", Dy).replace("Dz", Dz).replace("Lx", Lx).replace("Ly", Ly).replace("Lz", Lz) + selAlg + str(samples))
 			fileOpen = open(filename, "r")
 			print(fileOpen.read())
