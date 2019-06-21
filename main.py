@@ -1,6 +1,7 @@
 import os
 import datetime
 from csvGeneratorPerf import csvGeneratorPerf
+from csvGeneratorValgrind import csvGeneratorValgrind
 
 def showMenu():
 	print()
@@ -88,6 +89,7 @@ metrics = {0 : 'cacheReferences',
 		   10: 'elapsedSeconds'}
 
 generate = csvGeneratorPerf()
+generate1 = csvGeneratorValgrind()
 
 showMenu()
 
@@ -198,6 +200,7 @@ while keep:
 	elif selection == 6:
 		print("Creating csv...")
 		generate.generate()
+		generate1.generate()
 		print("CSV created :3")
 		reshow()
 

@@ -27,6 +27,3 @@ class csvGeneratorPerf(object):
             opened.write(save + "\n")
         
         opened.close()
-
-a = csvGeneratorPerf()
-a.generate()

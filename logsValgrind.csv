@@ -1,0 +1,2 @@
+algorithm,entries,ix,iy,iz,dx,dy,dz,lx,ly,lz,i1_miss_rate,d1_miss_rate,ll_miss_rate
+"prime_custom_demo",5000,1024,8,64,1024,8,64,2048,8,64,3.60,22.2,7.5
