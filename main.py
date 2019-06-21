@@ -102,6 +102,7 @@ while keep:
 	elif selection == 1:
 		os.system("make")
 		os.system("mkdir logsPerf")
+		os.system("mkdir graphsPerf")
 		os.system("mkdir logsValgrind")
 		reshow()
 
@@ -236,8 +237,9 @@ while keep:
 				plt.legend(handles=[red_patch, blue_patch])
 				plt.xlabel('entries')
 				plt.ylabel(metric)
-				plt.title("Comparation between prime algorithms")
+				plt.title("Comparation between prime algorithms in " + metric)
 				plt.xscale('linear')
+				plt.savefig('graphsPerf/primes_' + metric + '.png')
 				plt.show()
 		else:
 
@@ -257,10 +259,11 @@ while keep:
 				csv = pd.read_csv("logsPerf.csv")
 				algCsv = csv[csv.algorithm == stringAlg[2:][:-1]].sort_values(by='entries').reset_index()
 				plt.plot(algCsv.entries, algCsv[metric])
-				plt.title(stringAlg[2:][:-1])
+				plt.title(metric + ' in '+ stringAlg[2:][:-1])
 				plt.xlabel('entries')
 				plt.ylabel(metric)
 				plt.xscale('linear')
+				plt.savefig('graphsPerf/' + stringAlg[2:][:-1] + '_' + metric + '.png')
 				plt.show()
 
 		reshow()
