@@ -66,7 +66,7 @@ keep = 1
 # Terminal commands
 perf = "perf stat -e cache-references,cache-misses,task-clock,cycles,instructions -a "
 perfSave = "perf stat -o FILENAME -e cache-references,cache-misses,task-clock,cycles,instructions -a "
-valgrind = 'valgrind --log-file="FILENAME" --tool=cachegrind --I1=Ix,Iy,Iz --D1=Dx,Dy,Dz --LL=Lx,Ly,Lz '
+valgrind = 'valgrind --log-file="FILENAME" --tool=cachegrind --D1=Dx,Dy,Dz '
 
 # Algorithms
 alg = {0 : "./bubble_sort_demo ",
@@ -87,9 +87,6 @@ metrics = {0 : 'cacheReferences',
 		   8 : 'instructions',
 		   9 : 'instructionsRelat',
 		   10: 'elapsedSeconds'}
-
-generate = csvGeneratorPerf()
-generate1 = csvGeneratorValgrind()
 
 showMenu()
 
@@ -146,27 +143,18 @@ while keep:
 		else:
 		
 			selAlg = alg[selAlg]
-
 			
-			Iy = input("[LEVEL1 INSTRUCTION CACHE] Associativity: ")
-			Iz = input("[LEVEL1 INSTRUCTION CACHE] Line Size: ")
-			Ix = input("[LEVEL1 INSTRUCTION CACHE] Size: ")
-
-			Dy = input("[LEVEL1 DATA CACHE] Associativity: ")
-			Dz = input("[LEVEL1 DATA CACHE] Line Size: ")
 			Dx = input("[LEVEL1 INSTRUCTION CACHE] Size: ")
-
-			Ly = input("[LAST LEVEL CACHE] Associativity: ")
-			Lz = input("[LAST LEVEL CACHE] Line Size: ")
-			Lx = input("[LEVEL1 INSTRUCTION CACHE] Size: ")
+			Dz = input("[LEVEL1 DATA CACHE] Line Size: ")
+			Dy = input("[LEVEL1 DATA CACHE] Associativity: ")
 
 			samples = int(input("How much entries do you want? "))
 
 			while(samples<=0):
 				samples = int(input("Error. Type a valid number: "))
 
-			filename = "logsValgrind/" + selAlg[2:][:-1] + "#" + str(samples) + 'x' + str(Ix) + 'x' + str(Iy) + 'x' + str(Iz) + 'x' + str(Dx) + 'x' + str(Dy) + 'x' + str(Dz) + 'x' + str(Lx) + 'x' + str(Ly) + 'x' + str(Lz) + 'x' + "#" + ".txt"
-			os.system(valgrind.replace("FILENAME", filename).replace("Ix", Ix).replace("Iy", Iy).replace("Iz", Iz).replace("Dx", Dx).replace("Dy", Dy).replace("Dz", Dz).replace("Lx", Lx).replace("Ly", Ly).replace("Lz", Lz) + selAlg + str(samples))
+			filename = "logsValgrind/" + selAlg[2:][:-1] + "#" + str(samples) + 'x' + str(Dx) + 'x' + str(Dy) + 'x' + str(Dz) + 'x' + ".txt"
+			os.system(valgrind.replace("FILENAME", filename).replace("Dx", Dx).replace("Dy", Dy).replace("Dz", Dz) + selAlg + str(samples))
 			fileOpen = open(filename, "r")
 			print(fileOpen.read())
 			fileOpen.close()
@@ -199,6 +187,9 @@ while keep:
 
 	elif selection == 6:
 		print("Creating csv...")
+		generate = csvGeneratorPerf()
+		generate1 = csvGeneratorValgrind()
+		
 		generate.generate()
 		generate1.generate()
 		print("CSV created :3")
