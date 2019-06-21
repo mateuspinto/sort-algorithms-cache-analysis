@@ -8,11 +8,11 @@ def showMenu():
 	print("Welcome to Cache tests!")
 	print("--------------------------------------------------------")
 	print()
-	print("1 - Compile C++ binaries")
+	print("1 - Compile C++ binaries and create folders")
 	print("2 - Run algorithm analysis with Perf")
 	print("3 - Run cache simulations with Valgrind")
-	print("4 - Run empirical tests")
-	print("6 - Create CSV")
+	print("4 - Run empirical tests with Perf")
+	print("6 - Create CSV for graph plots")
 	print("7 - Plot graphs")
 	print("8 - Delete binaries")
 	print("9 - Quit")
@@ -34,6 +34,7 @@ def showAlg():
 	print("2 - Run quick sort")
 	print("3 - Run primes algorithm (without optimization)")
 	print("4 - Run primes algorithm (with optimization)")
+	print("5 - All prime algorithm (only for graph plots)")
 	print("9 - Go back to main menu")
 	print()
 	print("--------------------------------------------------------")
@@ -60,17 +61,20 @@ def showMetrics():
 
 
 keep = 1
+
+# Terminal commands
 perf = "perf stat -e cache-references,cache-misses,task-clock,cycles,instructions -a "
 perfSave = "perf stat -o FILENAME -e cache-references,cache-misses,task-clock,cycles,instructions -a "
-valgrind = 'valgrind --tool=cachegrind --I1=Ix,Iy,Iz --D1=Dx,Dy,Dz --LL=Lx,Ly,Lz '
-valgrindSave = 'valgrind --log-file="TOSAVE" --tool=cachegrind --I1=Ix,Iy,Iz --D1=Dx,Dy,Dz --LL=Lx,Ly,Lz '
+valgrind = 'valgrind --log-file="FILENAME" --tool=cachegrind --I1=Ix,Iy,Iz --D1=Dx,Dy,Dz --LL=Lx,Ly,Lz '
 
+# Algorithms
 alg = {0 : "./bubble_sort_demo ",
 	   1 : "./radix_sort_demo ",
 	   2 : "./quick_sort_demo ",
 	   3 : "./prime_demo ",
 	   4 : "./prime_custom_demo "}
 
+# Perf metrics
 metrics = {0 : 'cacheReferences',
 		   1 : 'cacheReferencesRelat',
 		   2 : 'cacheMisses',
@@ -97,6 +101,8 @@ while keep:
 	# Compile C++ files
 	elif selection == 1:
 		os.system("make")
+		os.system("mkdir logsPerf")
+		os.system("mkdir logsValgrind")
 		reshow()
 
 	# Run Perf
@@ -156,7 +162,11 @@ while keep:
 			while(samples<=0):
 				samples = int(input("Error. Type a valid number: "))
 
-			os.system(valgrind.replace("Ix", Ix).replace("Iy", Iy).replace("Iz", Iz).replace("Dx", Dx).replace("Dy", Dy).replace("Dz", Dz).replace("Lx", Lx).replace("Ly", Ly).replace("Lz", Lz) + selAlg + str(samples))
+			filename = "logsValgrind/" + selAlg[2:][:-1] + "#" + str(samples) + 'x' + str(Ix) + 'x' + str(Iy) + 'x' + str(Iz) + 'x' + str(Dx) + 'x' + str(Dy) + 'x' + str(Dz) + 'x' + str(Lx) + 'x' + str(Ly) + 'x' + str(Lz) + 'x' + "#" + str(datetime.datetime.now()).replace(" ","_") + ".txt"
+			os.system(valgrind.replace("FILENAME", filename).replace("Ix", Ix).replace("Iy", Iy).replace("Iz", Iz).replace("Dx", Dx).replace("Dy", Dy).replace("Dz", Dz).replace("Lx", Lx).replace("Ly", Ly).replace("Lz", Lz) + selAlg + str(samples))
+			fileOpen = open(filename, "r")
+			print(fileOpen.read())
+			fileOpen.close()
 
 		reshow()
 
@@ -184,37 +194,6 @@ while keep:
 
 		reshow()
 
-	elif selection == 5:
-		
-		# showAlg()
-		# selAlg = int(input("Select one: "))
-
-		# while((selAlg<0 or selAlg>(len(alg)-1)) and selAlg != 9):
-		# 		selAlg = int(input("Error. Type a valid number: "))
-
-		# if selAlg == 9: # Going back to main menu
-		# 	pass
-		# else:
-		
-		# 	selAlg = alg[selAlg]
-		associativity = 2
-		lineSize = 16
-		size = 64
-
-		while associativity<=64:
-			while lineSize<=128:
-				while size<=16384:
-
-					print(str(associativity) + ' ' + str(lineSize) + ' ' + str(size))
-
-					size *= 2
-				size = 64
-				lineSize *= 2
-			lineSize = 16
-			associativity *= 2
-
-
-
 	elif selection == 6:
 		print("Creating csv...")
 		generate.generate()
@@ -224,15 +203,42 @@ while keep:
 	elif selection == 7:
 		import pandas as pd
 		import matplotlib.pyplot as plt
+		import matplotlib.patches as mpatches
 
 		showAlg()
 		selAlg = int(input("Select one: "))
 
-		while((selAlg<0 or selAlg>(len(alg)-1)) and selAlg != 9):
+		while((selAlg<0 or selAlg>(len(alg)-1)) and selAlg != 9 and selAlg != 5):
 				selAlg = int(input("Error. Type a valid number: "))
 
 		if selAlg == 9: # Going back to main menu
 			pass
+
+		if selAlg == 5: # Comparation between prime algorithms
+
+			showMetrics()
+			metric = int(input("Select one: "))
+
+			while((metric<0 or metric>(len(metrics)-1)) and metric != 99):
+				metric = int(input("Error. Type a valid number: "))
+
+			if metric == 99:
+				pass
+			else:
+				metric = metrics[metric]
+				csv = pd.read_csv("logsPerf.csv")
+				primesWithoutOptimization =  csv[csv.algorithm == 'prime_demo'].sort_values(by='entries').reset_index()
+				primesWithOptimization = csv[csv.algorithm == 'prime_custom_demo'].sort_values(by='entries').reset_index()
+				plt.plot(primesWithoutOptimization.entries, primesWithoutOptimization[metric], color='red')
+				plt.plot(primesWithOptimization.entries, primesWithOptimization[metric], color='blue')
+				red_patch = mpatches.Patch(color='red', label='Conventional prime numbers algorithm')
+				blue_patch = mpatches.Patch(color='blue', label='Optimized single thread prime algorithm')
+				plt.legend(handles=[red_patch, blue_patch])
+				plt.xlabel('entries')
+				plt.ylabel(metric)
+				plt.title("Comparation between prime algorithms")
+				plt.xscale('linear')
+				plt.show()
 		else:
 
 			stringAlg = alg[selAlg]
@@ -254,6 +260,7 @@ while keep:
 				plt.title(stringAlg[2:][:-1])
 				plt.xlabel('entries')
 				plt.ylabel(metric)
+				plt.xscale('linear')
 				plt.show()
 
 		reshow()

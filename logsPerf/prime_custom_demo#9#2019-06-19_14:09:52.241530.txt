@@ -1,0 +1,13 @@
+# started on Wed Jun 19 14:09:52 2019
+
+
+ Performance counter stats for 'system wide':
+
+           328.240      cache-references          #   40,656 M/sec                  
+            61.587      cache-misses              #   18,763 % of all cache refs    
+              8,07 msec task-clock                #    6,663 CPUs utilized          
+         7.164.664      cycles                    #    0,887 GHz                    
+         7.703.990      instructions              #    1,08  insn per cycle         
+
+       0,001211738 seconds time elapsed
+
