@@ -1,0 +1,10 @@
+==10610== Cachegrind, a cache and branch-prediction profiler
+==10610== Copyright (C) 2002-2017, and GNU GPL'd, by Nicholas Nethercote et al.
+==10610== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==10610== Command: ./radix_sort_demo 10000
+==10610== Parent PID: 10609
+==10610== 
+--10610-- warning: L3 cache found, using its data for the LL simulation.
+==10610== Cachegrind: cannot continue: the minimum line size (16)
+==10610==   must be equal to or larger than the maximum register size (32)
+==10610==   but it is not.  Exiting now.

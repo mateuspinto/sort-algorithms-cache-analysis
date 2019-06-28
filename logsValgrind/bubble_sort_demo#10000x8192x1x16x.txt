@@ -1,0 +1,10 @@
+==10744== Cachegrind, a cache and branch-prediction profiler
+==10744== Copyright (C) 2002-2017, and GNU GPL'd, by Nicholas Nethercote et al.
+==10744== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==10744== Command: ./bubble_sort_demo 10000
+==10744== Parent PID: 10743
+==10744== 
+--10744-- warning: L3 cache found, using its data for the LL simulation.
+==10744== Cachegrind: cannot continue: the minimum line size (16)
+==10744==   must be equal to or larger than the maximum register size (32)
+==10744==   but it is not.  Exiting now.

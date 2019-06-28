@@ -144,7 +144,7 @@ while keep:
 		
 			selAlg = alg[selAlg]
 			
-			Dx = input("[LEVEL1 INSTRUCTION CACHE] Size: ")
+			Dx = input("[LEVEL1 DATA CACHE] Size: ")
 			Dz = input("[LEVEL1 DATA CACHE] Line Size: ")
 			Dy = input("[LEVEL1 DATA CACHE] Associativity: ")
 
